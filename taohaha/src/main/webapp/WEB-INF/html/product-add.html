@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Grids</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+
+
+<!-- Custom Theme files -->
+
+<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="css/e3.css" />
+<link rel="stylesheet" type="text/css" href="css/default.css" />
+<script type="text/javascript" src="js/jquery-easyui-1.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-easyui-1.4.1/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/jquery-easyui-1.4.1/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/fileinput.min.css" rel="stylesheet">
+<link href="css/product-add.css" rel="stylesheet">
+<link href="css/style3.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="css/selfinput.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="/js/kindeditor-4.1.10/themes/default/default.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+
+<!--js-->
+<script src="js/jquery-2.1.1.min.js"></script>
+
+<script>
+var itemAddEditor ;
+//页面初始化完毕后执行此方法
+$(function(){
+	//创建富文本编辑器
+	itemAddEditor = E3.createEditor("#itemAddForm [name=productDesc]");
+	//初始化类目选择和图片上传器
+	E3.init({fun:function(node){
+		//根据商品的分类id取商品 的规格模板，生成规格信息。第四天内容。
+		//E3.changeItemParam(node, "itemAddForm");
+	}});
+});
+//提交表单
+function submitForm(){
+	
+	itemAddEditor.sync();
+	//有效性验证
+	
+	//取商品价格，单位为“分”
+	
+	//取商品的规格 
+	/*
+	var paramJson = [];
+	$("#itemAddForm .params li").each(function(i,e){
+		var trs = $(e).find("tr");
+		var group = trs.eq(0).text();
+		var ps = [];
+		for(var i = 1;i<trs.length;i++){
+			var tr = trs.eq(i);
+			ps.push({
+				"k" : $.trim(tr.find("td").eq(0).find("span").text()),
+				"v" : $.trim(tr.find("input").val())
+			});
+		}
+		paramJson.push({
+			"group" : group,
+			"params": ps
+		});
+	});
+	//把json对象转换成字符串
+	paramJson = JSON.stringify(paramJson);
+	$("#itemAddForm [name=itemParams]").val(paramJson);
+	*/
+	//ajax的post方式提交表单
+	//$("#itemAddForm").serialize()将表单序列号为key-value形式的字符串
+	alert("添加商品成功！")
+
+	$.post("/product/savepro",$("#itemAddForm").serialize(), function(data){
+		if(data.status == 200){
+			$.messager.alert('提示','新增商品成功!');
+		}
+	});
+}
+
+function clearForm(){
+	$('#itemAddForm').form('reset');
+	itemAddEditor.html('');
+}
+
+function showName(typeId)
+{
+	$.ajax({
+        type: "POST",//请求方式
+        url: "/product/showCatName",//地址，就是json文件的请求路径
+        data:{
+        	
+        	typeId:typeId,
+        },
+        dataType: "json",
+        success:function(data){//返回的参数就是 action里面所有的有get和set方法的参数
+        	$(".showCat1").val(data.data.typeName);
+         	
+        	  
+        	 
+        
+        }
+    });
+	
+	}
+function editinfo2(){
+	var html="";
+
+	$("#myModal1").modal("show");
+
+	$('#myModal1').on('shown.bs.modal', function () {
+		
+		$.ajax({
+			type:"POST",
+			url:"/product/class",
+			dataType:"json",
+			
+			success:function(data){
+				
+				
+				console.log(data.data);
+				for(var i=0;i<data.data.length;i++)
+				{	
+					if(i%10==0)
+						{
+							html+="<tr><td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='12%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+							
+						}
+					else if(i%10==9)
+						{
+							html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td></tr>";
+							
+						}
+					else {
+						html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+					}
+				}
+					
+				$(".show-class1").append(html);
+				
+				
+				
+				
+				
+			}
+		});
+		});
+}
+function initFileInput(ctrlName, uploadUrl) {
+    var control = $('#' + ctrlName);
+    
+    control.fileinput({
+        language: 'zh', //设置语言
+        uploadUrl: uploadUrl, //上传的地址
+        allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
+        //uploadAsync: false, //插件支持同步和异步
+        //showUpload: false, //是否显示上传按钮
+    }).on("fileuploaded", function(event, data) {
+    	alert("上传成功")
+    	
+        //上传图片后的回调函数，可以在这做一些处理
+    });
+}
+function showCatFun(){
+	
+	$("#myModal1").modal('hide');
+	$("#myModal1").on('hidden.bs.modal',function(){  
+        
+       	var html=$(".showCat1").val();
+       
+       	$(".showClass").html(html);
+       
+       	$(".proName").val(html);
+       	
+    });
+}
+
+
+$(function(){
+//指定上传controller访问地址
+var path = 'http://localhost:8082/upload';
+//页面初始化加载initFileInput()方法传入ID名和上传地址
+initFileInput("itemImagers",path);
+});
+</script>
+</script>
+<!--icons-css-->
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<link href="css/hover.css" rel="stylesheet" media="all">
+<link href="css/style.css" rel="stylesheet" media="all">
+<!--Google Fonts-->
+<link href='https://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>
+<!--//skycons-icons-->
+</head>
+<body>	
+<div class="page-container">	
+   <div class="left-content">
+	   <div class="mother-grid-inner">
+            <!--header start here-->
+				
+<!--heder end here-->
+<!-- script-for sticky-nav -->
+		
+		<!-- /script-for sticky-nav -->
+<!--inner block start here-->
+<div class="inner-block" >
+  	 <div class="form-grou">
+  	 	<form method="post"  class="form-horizontal1" role="form" id="myForm11" onsubmit="return ">
+        <div class="modal fade" id="myModal1"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+            <div class="modal-dialog">
+                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                   
+					<div class="show-class1">
+						
+					</div>
+                   	
+                        <!--  模态框内容，我在此处添加一个表单 -->
+                       	
+                           
+                       
+                  
+
+                    <div class="modal-footer">
+                    	<input type="text" class="showCat1" name="typeName">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="button" class="btn btn-info showCat2" onclick="showCatFun()">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
+ 			<div><button class="btn btn-info" onclick="editinfo2()" >分类</button>
+ 			<br>
+ 			<br>
+ 			<form id="itemAddForm" class="itemForm" method="post">
+	    <table style="border-collapse:separate; border-spacing:10px;">
+	        <tr>
+	            <td>商品类目:</td>
+	            
+	            <td>
+	            	<input class="proName" type="hidden" name="productTypeName">
+	            	<span class="showClass"></span>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td>商品名称:</td>
+	            <td><input class="easyui-textbox" type="text" name="productName" data-options="required:true" style="width: 280px;"></input></td>
+	        </tr>
+	        
+	        
+	        <tr>
+	            <td>商品价格:</td>
+	            <td>
+	            	<input type="text" name="productPrice"/>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>库存数量:</td>
+	            <td><input class="easyui-numberbox" type="text" name="productKc" data-options="min:1,max:99999999,precision:0,required:true" /></td>
+	        </tr>
+	       
+	        <tr>
+	            <td>商品图片:</td>
+	            <td>
+	            	 <a href="javascript:void(0)" class="easyui-linkbutton picFileUpload">上传图片</a>
+	                 <input type="hidden" name="productPic"/>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>商品描述:</td>
+	            <td>
+	                <textarea style="width:800px;height:300px;visibility:hidden;" name="productDesc"></textarea>
+	              	
+	            </td>
+	        </tr>
+	        
+	    </table>
+	    
+	</form>
+	<div style="padding:5px">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
+	</div>
+ 			
+ 			
+ 	
+ 	</div>
+</div>
+</div>
+</div>
+<!--inner block end here-->
+<!--copy rights start here-->
+<div class="copyrights">
+	 <p>Copyright &copy; 2016.Company name All rights <a href="http://www.cssmoban.com/" target="_blank" title="天喵商城">天喵商城</a> - Collect from <a href="http://www.cssmoban.com/" title="天喵商城" target="_blank">天喵商城</a></p>
+</div>	
+<!--COPY rights end here-->
+</div>
+<!--slider menu-->
+     <div class="sidebar-menu">
+		  	<div class="logo"> <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="#"> <span id="logo" ></span> 
+			      <!--<img id="logo" src="" alt="Logo"/>--> 
+			  </a> </div>		  
+		    <div class="menu">
+		      <ul id="menu" >
+		        <li id="menu-home" ><a href="index.html"><i class="fa fa-tachometer"></i><span>个人中心</span></a></li>
+		        <li><a href="#"><i class="fa fa-cogs"></i><span>商品管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul>
+		            <li><a href="product-add.html">新增商品</a></li>
+		            <li><a href="product-edit.html">编辑商品</a></li>
+		                    
+		          </ul>
+		        </li>
+		        <li id="menu-comunicacao" ><a href="#"><i class="fa fa-book nav_icon"></i><span>商品分类管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-comunicacao-sub" >
+		            <li id="menu-mensagens" style="width: 120px" ><a href="category-add.html">新增分类</a></li>
+		           	<li id="menu-mensagens" style="width: 120px" ><a href="category-edit.html">编辑分类</a></li>
+		          	
+		          </ul>
+		        </li>
+		        
+		        <li id="menu-academico" ><a href="#"><i class="fa fa-file-text"></i><span>订单管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-academico-sub" >
+		          	 <li id="menu-academico-boletim" ><a href="login.html">Login</a></li>
+		            <li id="menu-academico-avaliacoes" ><a href="signup.html">Sign Up</a></li>		           
+		          </ul>
+		        </li>
+		        
+		        <li><a href="charts.html"><i class="fa fa-bar-chart"></i><span>Charts</span></a></li>
+		        <li><a href="#"><i class="fa fa-envelope"></i><span>Mailbox</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		        	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="inbox.html">Inbox</a></li>
+			            <li id="menu-academico-boletim" ><a href="inbox-details.html">Compose email</a></li>
+		             </ul>
+		        </li>
+		         <li><a href="#"><i class="fa fa-cog"></i><span>System</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="404.html">404</a></li>
+			            <li id="menu-academico-boletim" ><a href="blank.html">Blank</a></li>
+		             </ul>
+		         </li>
+		         <li><a href="#"><i class="fa fa-shopping-cart"></i><span>E-Commerce</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	<ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="product.html">Product</a></li>
+			            <li id="menu-academico-boletim" ><a href="price.html">Price</a></li>
+		             </ul>
+		         </li>
+		      </ul>
+		    </div>
+	 </div>
+	
+</div>
+<!--slide bar menu end here-->
+<script>
+var toggle = true;
+            
+$(".sidebar-icon").click(function() {                
+  if (toggle)
+  {
+    $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+    $("#menu span").css({"position":"absolute"});
+  }
+  else
+  {
+    $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+    setTimeout(function() {
+      $("#menu span").css({"position":"relative"});
+    }, 400);
+  }               
+                toggle = !toggle;
+            });
+</script>
+<!--scrolling js-->
+		<script src="js/jquery.nicescroll.js"></script>
+		<script src="js/scripts.js"></script>
+		<!--//scrolling js-->
+<script src="js/bootstrap.js"> </script>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/fileinput.min.js"></script>
+<script src="js/fileinput_locale_zh.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- mother grid end here-->
+</body>
+</html>
+
+              

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atao.mapper.UserShouhuoMapper" >
+  <resultMap id="BaseResultMap" type="com.atao.po.UserShouhuo" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="hyg_name" property="hygName" jdbcType="VARCHAR" />
+    <result column="hyg_phone" property="hygPhone" jdbcType="VARCHAR" />
+    <result column="hyg_addr" property="hygAddr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, hyg_name, hyg_phone, hyg_addr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atao.po.UserShouhuoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_shouhuo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.atao.po.UserShouhuoExample" >
+    delete from user_shouhuo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atao.po.UserShouhuo" >
+    insert into user_shouhuo (user_id, hyg_name, hyg_phone, 
+      hyg_addr)
+    values (#{userId,jdbcType=INTEGER}, #{hygName,jdbcType=VARCHAR}, #{hygPhone,jdbcType=VARCHAR}, 
+      #{hygAddr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atao.po.UserShouhuo" >
+    insert into user_shouhuo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="hygName != null" >
+        hyg_name,
+      </if>
+      <if test="hygPhone != null" >
+        hyg_phone,
+      </if>
+      <if test="hygAddr != null" >
+        hyg_addr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hygName != null" >
+        #{hygName,jdbcType=VARCHAR},
+      </if>
+      <if test="hygPhone != null" >
+        #{hygPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="hygAddr != null" >
+        #{hygAddr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atao.po.UserShouhuoExample" resultType="java.lang.Integer" >
+    select count(*) from user_shouhuo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_shouhuo
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hygName != null" >
+        hyg_name = #{record.hygName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hygPhone != null" >
+        hyg_phone = #{record.hygPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hygAddr != null" >
+        hyg_addr = #{record.hygAddr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_shouhuo
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      hyg_name = #{record.hygName,jdbcType=VARCHAR},
+      hyg_phone = #{record.hygPhone,jdbcType=VARCHAR},
+      hyg_addr = #{record.hygAddr,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

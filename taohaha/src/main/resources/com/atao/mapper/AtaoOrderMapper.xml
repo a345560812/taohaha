@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atao.mapper.AtaoOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.atao.po.AtaoOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="order_time" property="orderTime" jdbcType="INTEGER" />
+    <result column="order_money" property="orderMoney" jdbcType="DECIMAL" />
+    <result column="atao_name" property="ataoName" jdbcType="VARCHAR" />
+    <result column="atao_phone" property="ataoPhone" jdbcType="INTEGER" />
+    <result column="atao_addr" property="ataoAddr" jdbcType="VARCHAR" />
+    <result column="order_stat" property="orderStat" jdbcType="TINYINT" />
+    <result column="order_pay" property="orderPay" jdbcType="TINYINT" />
+    <result column="order_mes" property="orderMes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_id, user_id, order_time, order_money, atao_name, atao_phone, atao_addr, 
+    order_stat, order_pay, order_mes
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atao.po.AtaoOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from atao_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from atao_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from atao_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atao.po.AtaoOrderExample" >
+    delete from atao_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atao.po.AtaoOrder" >
+    insert into atao_order (id, order_id, user_id, 
+      order_time, order_money, atao_name, 
+      atao_phone, atao_addr, order_stat, 
+      order_pay, order_mes)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{orderTime,jdbcType=INTEGER}, #{orderMoney,jdbcType=DECIMAL}, #{ataoName,jdbcType=VARCHAR}, 
+      #{ataoPhone,jdbcType=INTEGER}, #{ataoAddr,jdbcType=VARCHAR}, #{orderStat,jdbcType=TINYINT}, 
+      #{orderPay,jdbcType=TINYINT}, #{orderMes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atao.po.AtaoOrder" >
+    insert into atao_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="orderTime != null" >
+        order_time,
+      </if>
+      <if test="orderMoney != null" >
+        order_money,
+      </if>
+      <if test="ataoName != null" >
+        atao_name,
+      </if>
+      <if test="ataoPhone != null" >
+        atao_phone,
+      </if>
+      <if test="ataoAddr != null" >
+        atao_addr,
+      </if>
+      <if test="orderStat != null" >
+        order_stat,
+      </if>
+      <if test="orderPay != null" >
+        order_pay,
+      </if>
+      <if test="orderMes != null" >
+        order_mes,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=INTEGER},
+      </if>
+      <if test="orderMoney != null" >
+        #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ataoName != null" >
+        #{ataoName,jdbcType=VARCHAR},
+      </if>
+      <if test="ataoPhone != null" >
+        #{ataoPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ataoAddr != null" >
+        #{ataoAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStat != null" >
+        #{orderStat,jdbcType=TINYINT},
+      </if>
+      <if test="orderPay != null" >
+        #{orderPay,jdbcType=TINYINT},
+      </if>
+      <if test="orderMes != null" >
+        #{orderMes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atao.po.AtaoOrderExample" resultType="java.lang.Integer" >
+    select count(*) from atao_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update atao_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderTime != null" >
+        order_time = #{record.orderTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderMoney != null" >
+        order_money = #{record.orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ataoName != null" >
+        atao_name = #{record.ataoName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ataoPhone != null" >
+        atao_phone = #{record.ataoPhone,jdbcType=INTEGER},
+      </if>
+      <if test="record.ataoAddr != null" >
+        atao_addr = #{record.ataoAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderStat != null" >
+        order_stat = #{record.orderStat,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderPay != null" >
+        order_pay = #{record.orderPay,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderMes != null" >
+        order_mes = #{record.orderMes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update atao_order
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      order_time = #{record.orderTime,jdbcType=INTEGER},
+      order_money = #{record.orderMoney,jdbcType=DECIMAL},
+      atao_name = #{record.ataoName,jdbcType=VARCHAR},
+      atao_phone = #{record.ataoPhone,jdbcType=INTEGER},
+      atao_addr = #{record.ataoAddr,jdbcType=VARCHAR},
+      order_stat = #{record.orderStat,jdbcType=TINYINT},
+      order_pay = #{record.orderPay,jdbcType=TINYINT},
+      order_mes = #{record.orderMes,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atao.po.AtaoOrder" >
+    update atao_order
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=INTEGER},
+      </if>
+      <if test="orderMoney != null" >
+        order_money = #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ataoName != null" >
+        atao_name = #{ataoName,jdbcType=VARCHAR},
+      </if>
+      <if test="ataoPhone != null" >
+        atao_phone = #{ataoPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ataoAddr != null" >
+        atao_addr = #{ataoAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStat != null" >
+        order_stat = #{orderStat,jdbcType=TINYINT},
+      </if>
+      <if test="orderPay != null" >
+        order_pay = #{orderPay,jdbcType=TINYINT},
+      </if>
+      <if test="orderMes != null" >
+        order_mes = #{orderMes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atao.po.AtaoOrder" >
+    update atao_order
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      order_time = #{orderTime,jdbcType=INTEGER},
+      order_money = #{orderMoney,jdbcType=DECIMAL},
+      atao_name = #{ataoName,jdbcType=VARCHAR},
+      atao_phone = #{ataoPhone,jdbcType=INTEGER},
+      atao_addr = #{ataoAddr,jdbcType=VARCHAR},
+      order_stat = #{orderStat,jdbcType=TINYINT},
+      order_pay = #{orderPay,jdbcType=TINYINT},
+      order_mes = #{orderMes,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

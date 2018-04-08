@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atao.mapper.ProductsMapper" >
+  <resultMap id="BaseResultMap" type="com.atao.po.Products" >
+    <id column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+    <result column="product_kc" property="productKc" jdbcType="INTEGER" />
+    <result column="product_state" property="productState" jdbcType="TINYINT" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    product_id, product_name, product_pic, product_price, product_kc, product_state, 
+    product_type_name, created, updated
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atao.po.ProductsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from products
+    where product_id = #{productId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from products
+    where product_id = #{productId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atao.po.ProductsExample" >
+    delete from products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atao.po.Products" >
+    insert into products (product_id, product_name, product_pic, 
+      product_price, product_kc, product_state, 
+      product_type_name, created, updated
+      )
+    values (#{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productPic,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DECIMAL}, #{productKc,jdbcType=INTEGER}, #{productState,jdbcType=TINYINT}, 
+      #{productTypeName,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atao.po.Products" >
+    insert into products
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productPic != null" >
+        product_pic,
+      </if>
+      <if test="productPrice != null" >
+        product_price,
+      </if>
+      <if test="productKc != null" >
+        product_kc,
+      </if>
+      <if test="productState != null" >
+        product_state,
+      </if>
+      <if test="productTypeName != null" >
+        product_type_name,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPic != null" >
+        #{productPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productKc != null" >
+        #{productKc,jdbcType=INTEGER},
+      </if>
+      <if test="productState != null" >
+        #{productState,jdbcType=TINYINT},
+      </if>
+      <if test="productTypeName != null" >
+        #{productTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <resultMap type="com.atao.util.SearchProduct" id="SearchMap">
+    <id property="productId" column="product_id" />
+    <result property="productName" column="product_name"  />
+    <result property="productPrice" column="product_price" />
+    <result property="productPic" column="product_pic" />
+    <result property="productTypeName" column="product_type_name"/>
+</resultMap>
+  <resultMap type="com.atao.util.SearchResult" id="SearchMap1">
+    <id property="productId" column="product_id" />
+    <result property="productName" column="product_name"  />
+    <result property="productPrice" column="product_price" />
+    <result property="productPic" column="product_pic" />
+    <result property="productTypeName" column="product_type_name"/>
+</resultMap>
+  <select id="getProductById" parameterType="java.lang.Long" resultMap="SearchMap">
+	SELECT
+		product_id,
+		product_name,
+		product_pic,
+		product_price,
+		product_type_name
+	FROM
+		products 
+		
+	WHERE product_state=1
+	and
+		 product_id=#{productId}
+</select>
+<select id="getProductById1" parameterType="java.lang.Long" resultMap="SearchMap1">
+	SELECT
+		product_id,
+		product_name,
+		product_pic,
+		product_price,
+		product_type_name
+	FROM
+		products 
+		
+	WHERE product_state=1
+	and
+		 product_id=#{productId}
+</select>
+  <select id="countByExample" parameterType="com.atao.po.ProductsExample" resultType="java.lang.Integer" >
+    select count(*) from products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update products
+    <set >
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPic != null" >
+        product_pic = #{record.productPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPrice != null" >
+        product_price = #{record.productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productKc != null" >
+        product_kc = #{record.productKc,jdbcType=INTEGER},
+      </if>
+      <if test="record.productState != null" >
+        product_state = #{record.productState,jdbcType=TINYINT},
+      </if>
+      <if test="record.productTypeName != null" >
+        product_type_name = #{record.productTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update products
+    set product_id = #{record.productId,jdbcType=BIGINT},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_pic = #{record.productPic,jdbcType=VARCHAR},
+      product_price = #{record.productPrice,jdbcType=DECIMAL},
+      product_kc = #{record.productKc,jdbcType=INTEGER},
+      product_state = #{record.productState,jdbcType=TINYINT},
+      product_type_name = #{record.productTypeName,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atao.po.Products" >
+    update products
+    <set >
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPic != null" >
+        product_pic = #{productPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        product_price = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productKc != null" >
+        product_kc = #{productKc,jdbcType=INTEGER},
+      </if>
+      <if test="productState != null" >
+        product_state = #{productState,jdbcType=TINYINT},
+      </if>
+      <if test="productTypeName != null" >
+        product_type_name = #{productTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atao.po.Products" >
+    update products
+    set product_name = #{productName,jdbcType=VARCHAR},
+      product_pic = #{productPic,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      product_kc = #{productKc,jdbcType=INTEGER},
+      product_state = #{productState,jdbcType=TINYINT},
+      product_type_name = #{productTypeName,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where product_id = #{productId,jdbcType=BIGINT}
+  </update>
+</mapper>

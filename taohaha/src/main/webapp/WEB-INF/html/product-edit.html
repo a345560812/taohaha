@@ -1,0 +1,567 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Portlet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/product-add.css" rel="stylesheet" type="text/css" media="all">
+<!-- Custom Theme files -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+<!--js-->
+<script src="js/jquery-2.1.1.min.js"></script> 
+<script>
+function showName(typeId)
+{
+	$.ajax({
+        type: "POST",//请求方式
+        url: "/product/showCatName",//地址，就是json文件的请求路径
+        data:{
+        	
+        	typeId:typeId,
+        },
+        dataType: "json",
+        success:function(data){//返回的参数就是 action里面所有的有get和set方法的参数
+        	$(".showCat1").val(data.data.typeName);
+         	
+        	  
+        	 
+        
+        }
+    });
+	
+}
+
+
+function proedit1(Id){
+	$("#myModal2").modal("show");
+	$('#myModal2').on('shown.bs.modal', function () {
+		$.ajax({
+			type:"POST",
+			url:"/product/edit",
+			async: true,
+			data:{
+				productId:Id
+			},
+			dataType:"json",
+			
+			success:function(data){
+				
+				
+				$(".ProId1").attr("value",data.data.productId);
+				$(".proPrice").attr("value",data.data.productPrice);
+				$(".proKc").attr("value",data.data.productKc);
+				$(".proname1").html(data.data.productName)
+				
+				
+			}
+		});
+		})
+	
+		
+		
+		
+
+	
+}
+$(function(){
+	function clearForm(){
+		$('#itemAddForm').form('reset');
+		itemAddEditor.html('');
+	}
+
+	
+	function editinfo2(){
+		var html="";
+
+		$("#myModal234").modal("show");
+
+		$('#myModal234').on('shown.bs.modal', function () {
+			
+			$.ajax({
+				type:"POST",
+				url:"/product/class",
+				dataType:"json",
+				
+				success:function(data){
+					
+					
+					console.log(data.data);
+					for(var i=0;i<data.data.length;i++)
+					{	
+						if(i%10==0)
+							{
+								html+="<tr><td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='12%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+								
+							}
+						else if(i%10==9)
+							{
+								html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td></tr>";
+								
+							}
+						else {
+							html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+						}
+					}
+						
+					$(".show-class1").append(html);
+					
+					
+					
+					
+					
+				}
+			});
+			});
+	}
+	$(".modal-footer1").on("click","#showCat4",function(){
+		$("#myModal234").modal('hide');
+		$("#myModal234").on('hidden.bs.modal',function(){  
+	        
+	       	var html=$(".showCat1").val();
+	       
+	       	$(".showClass").html(html);
+	       
+	       	$(".profind1").val(html);
+	       	
+	    });
+	})
+	$(".search-box").on("focus",".profind1",function(){
+		editinfo2();
+	});
+	$(".product-edit-observe").on("click",'.btn',function(){
+	var proId=$(this).parent().siblings(".prooId").text();
+	$.ajax({
+			type:"POST",
+			url:"/product/state",
+			async: true,
+			data:{
+				productId:proId
+			},
+			dataType:"json",
+			
+			success:function(data){
+				console.log(data);
+				if(data.data.productState==0)
+					{
+						alert("商品已下架");
+					}
+				if(data.data.productState==1)
+				{
+					alert("商品已上架");
+				}
+				
+				
+			}
+		});
+	if($(this).hasClass("btn-success"))
+	{	
+		$(this).removeClass("btn-success")
+		$(this).addClass("btn-warning");
+		$(this).text("已下架");
+	}
+	else if($(this).hasClass("btn-warning"))
+	{	
+		$(this).removeClass("btn-warning")
+		$(this).addClass("btn-success");
+		$(this).text("已上架");
+	}
+});
+})
+</script>
+<script src="js/product-edit.js"></script> 
+<!--icons-css-->
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<!--Google Fonts-->
+<link href='https://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>
+<!--//skycons-icons-->
+</head>
+<body>	
+<div class="page-container">	
+   <div class="left-content">
+	   <div class="mother-grid-inner">
+            <!--header start here-->
+				<div class="header-main">
+					<div class="header-left">
+							<div class="logo-name">
+									 <a href="index.html"> <h1>Shoppy</h1> 
+									<!--<img id="logo" src="" alt="Logo"/>--> 
+								  </a> 								
+							</div>
+							<!--search-box-->
+								<div class="search-box">
+									<form id="proClass1">
+										<input class="profind1" type="text" name="productTypeName" placeholder="按商品分类搜索" >	
+										<input type="submit" value="" id="submitCat">					
+									</form>
+								</div><!--//end-search-box-->
+							<div class="clearfix"> </div>
+						 </div>
+						 <div class="header-right">
+							<div class="profile_details_left"><!--notifications of menu start -->
+								<ul class="nofitications-dropdown">
+									<li class="dropdown head-dpdn">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">3</span></a>
+										<ul class="dropdown-menu">
+											<li>
+												<div class="notification_header">
+													<h3>You have 3 new messages</h3>
+												</div>
+											</li>
+											<li><a href="#">
+											   <div class="user_img"><img src="images/p4.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor</p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											   <div class="clearfix"></div>	
+											</a></li>
+											<li class="odd"><a href="#">
+												<div class="user_img"><img src="images/p2.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor </p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											  <div class="clearfix"></div>	
+											</a></li>
+											<li><a href="#">
+											   <div class="user_img"><img src="images/p3.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor</p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											   <div class="clearfix"></div>	
+											</a></li>
+											<li>
+												<div class="notification_bottom">
+													<a href="#">See all messages</a>
+												</div> 
+											</li>
+										</ul>
+									</li>
+									<li class="dropdown head-dpdn">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge blue">3</span></a>
+										<ul class="dropdown-menu">
+											<li>
+												<div class="notification_header">
+													<h3>You have 3 new notification</h3>
+												</div>
+											</li>
+											<li><a href="#">
+												<div class="user_img"><img src="images/p5.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor</p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											  <div class="clearfix"></div>	
+											 </a></li>
+											 <li class="odd"><a href="#">
+												<div class="user_img"><img src="images/p6.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor</p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											   <div class="clearfix"></div>	
+											 </a></li>
+											 <li><a href="#">
+												<div class="user_img"><img src="images/p7.png" alt=""></div>
+											   <div class="notification_desc">
+												<p>Lorem ipsum dolor</p>
+												<p><span>1 hour ago</span></p>
+												</div>
+											   <div class="clearfix"></div>	
+											 </a></li>
+											 <li>
+												<div class="notification_bottom">
+													<a href="#">See all notifications</a>
+												</div> 
+											</li>
+										</ul>
+									</li>	
+									<li class="dropdown head-dpdn">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><span class="badge blue1">9</span></a>
+										<ul class="dropdown-menu">
+											<li>
+												<div class="notification_header">
+													<h3>You have 8 pending task</h3>
+												</div>
+											</li>
+											<li><a href="#">
+												<div class="task-info">
+													<span class="task-desc">Database update</span><span class="percentage">40%</span>
+													<div class="clearfix"></div>	
+												</div>
+												<div class="progress progress-striped active">
+													<div class="bar yellow" style="width:40%;"></div>
+												</div>
+											</a></li>
+											<li><a href="#">
+												<div class="task-info">
+													<span class="task-desc">Dashboard done</span><span class="percentage">90%</span>
+												   <div class="clearfix"></div>	
+												</div>
+												<div class="progress progress-striped active">
+													 <div class="bar green" style="width:90%;"></div>
+												</div>
+											</a></li>
+											<li><a href="#">
+												<div class="task-info">
+													<span class="task-desc">Mobile App</span><span class="percentage">33%</span>
+													<div class="clearfix"></div>	
+												</div>
+											   <div class="progress progress-striped active">
+													 <div class="bar red" style="width: 33%;"></div>
+												</div>
+											</a></li>
+											<li><a href="#">
+												<div class="task-info">
+													<span class="task-desc">Issues fixed</span><span class="percentage">80%</span>
+												   <div class="clearfix"></div>	
+												</div>
+												<div class="progress progress-striped active">
+													 <div class="bar  blue" style="width: 80%;"></div>
+												</div>
+											</a></li>
+											<li>
+												<div class="notification_bottom">
+													<a href="#">See all pending tasks</a>
+												</div> 
+											</li>
+										</ul>
+									</li>	
+								</ul>
+								<div class="clearfix"> </div>
+							</div>
+							<!--notification menu end -->
+							<div class="profile_details">		
+								<ul>
+									<li class="dropdown profile_details_drop">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+											<div class="profile_img">	
+												<span class="prfil-img"><img src="images/p1.png" alt=""> </span> 
+												<div class="user-name">
+													<p>Malorum</p>
+													<span>Administrator</span>
+												</div>
+												<i class="fa fa-angle-down lnr"></i>
+												<i class="fa fa-angle-up lnr"></i>
+												<div class="clearfix"></div>	
+											</div>	
+										</a>
+										<ul class="dropdown-menu drp-mnu">
+											<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
+											<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li> 
+											<li> <a href="#"><i class="fa fa-sign-out"></i> Logout</a> </li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+							<div class="clearfix"> </div>				
+						</div>
+				     <div class="clearfix"> </div>	
+				</div>
+<!--heder end here-->
+<!-- script-for sticky-nav -->
+		<script>
+		$(document).ready(function() {
+			 var navoffeset=$(".header-main").offset().top;
+			 $(window).scroll(function(){
+				var scrollpos=$(window).scrollTop(); 
+				if(scrollpos >=navoffeset){
+					$(".header-main").addClass("fixed");
+				}else{
+					$(".header-main").removeClass("fixed");
+				}
+			 });
+			 
+		});
+		
+		</script>
+		<!-- /script-for sticky-nav -->
+<!--inner block start here-->
+<div class="inner-block">
+	<div class="searchCat">
+		<form method="post"  class="form-horizontal1" role="form" id="myForm11" onsubmit="return ">
+        <div class="modal fade" id="myModal234"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+            <div class="modal-dialog">
+                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                   
+					<div class="show-class1">
+						
+					</div>
+                   	
+                        <!--  模态框内容，我在此处添加一个表单 -->
+                       	
+                           
+                       
+                  
+
+                    <div class="modal-footer1">
+                    	<input type="text" class="showCat1" name="typeName">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="button" class="btn btn-primary showCat2" id="showCat4">确定啊</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
+	</div>
+	<form method="post"  class="form-horizontal2 form-search" role="form" id="myForm2" onsubmit="return ">
+        <div class="modal fade" id="myModal2"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+            <div class="modal-dialog">
+                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+		
+                  商品名称:		<span class="proname1"></span>
+         	          <br> <input type="hidden" name="productId" class="ProId1">
+                  商品价格:          <input type="text" class="search-query proPrice" name="productPrice">
+                   <br>
+                  商品库存:          <input type="text" class="search-query proKc" name="productKc">
+                   <br>
+                
+                       
+                  
+
+                    <div class="modal-footer">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="submit" class="btn btn-info">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
+    <table class="table table-striped ">
+                            <thead class="category-display1">
+                                <tr >
+                                	<th width="2%"><form><input type="checkbox" class="c2" id="checkAll"/></form></th>
+                                    <th width="1%" class="proId1">商品编号</th>
+                                    
+                                    <th width="15%">商品名称</th>
+                                   
+                                   <th width="5%">商品图片</th>
+                                    <th width="5%">商品价格</th>
+                                    <th width="5%">商品库存</th>
+                                    <th width="5%">商品类别</th>
+                                    <th width="10%">商品状态</th>
+                                    
+                                    <th width="10%">操作</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody class="product-edit-observe">
+                                
+
+                            </tbody>
+                            
+                        </table>
+</div>
+<!--inner block end here-->
+<!--copy rights start here-->
+<div class="copyrights">
+	 <p>Copyright &copy; 2016.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+</div>	
+<!--COPY rights end here-->
+</div>
+</div>
+<!--slider menu-->
+   <div class="sidebar-menu">
+		  	<div class="logo"> <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="#"> <span id="logo" ></span> 
+			      <!--<img id="logo" src="" alt="Logo"/>--> 
+			  </a> </div>		  
+		    <div class="menu">
+		      <ul id="menu" >
+		        <li id="menu-home" ><a href="index.html"><i class="fa fa-tachometer"></i><span>个人中心</span></a></li>
+		        <li><a href="#"><i class="fa fa-cogs"></i><span>商品管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul>
+		            <li><a href="product-add.html">新增商品</a></li>
+		            <li><a href="product-edit.html">编辑商品</a></li>
+		                    
+		          </ul>
+		        </li>
+		        <li id="menu-comunicacao" ><a href="#"><i class="fa fa-book nav_icon"></i><span>商品分类管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-comunicacao-sub" >
+		            <li id="menu-mensagens" style="width: 120px" ><a href="category-add.html">新增分类</a></li>
+		           	<li id="menu-mensagens" style="width: 120px" ><a href="category-edit.html">编辑分类</a></li>
+		          	
+		          </ul>
+		        </li>
+		        
+		        <li id="menu-academico" ><a href="#"><i class="fa fa-file-text"></i><span>订单管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-academico-sub" >
+		          	 <li id="menu-academico-boletim" ><a href="login.html">Login</a></li>
+		            <li id="menu-academico-avaliacoes" ><a href="signup.html">Sign Up</a></li>		           
+		          </ul>
+		        </li>
+		        
+		        <li><a href="charts.html"><i class="fa fa-bar-chart"></i><span>Charts</span></a></li>
+		        <li><a href="#"><i class="fa fa-envelope"></i><span>Mailbox</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		        	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="inbox.html">Inbox</a></li>
+			            <li id="menu-academico-boletim" ><a href="inbox-details.html">Compose email</a></li>
+		             </ul>
+		        </li>
+		         <li><a href="#"><i class="fa fa-cog"></i><span>System</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="404.html">404</a></li>
+			            <li id="menu-academico-boletim" ><a href="blank.html">Blank</a></li>
+		             </ul>
+		         </li>
+		         <li><a href="#"><i class="fa fa-shopping-cart"></i><span>E-Commerce</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	<ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="product.html">Product</a></li>
+			            <li id="menu-academico-boletim" ><a href="price.html">Price</a></li>
+		             </ul>
+		         </li>
+		      </ul>
+		    </div>
+	 </div>
+	<div class="clearfix"> </div>
+</div>
+<!--slide bar menu end here-->
+<script>
+var toggle = true;
+            
+$(".sidebar-icon").click(function() {                
+  if (toggle)
+  {
+    $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+    $("#menu span").css({"position":"absolute"});
+  }
+  else
+  {
+    $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+    setTimeout(function() {
+      $("#menu span").css({"position":"relative"});
+    }, 400);
+  }               
+                toggle = !toggle;
+            });
+</script>
+<!--scrolling js-->
+		<script src="js/jquery.nicescroll.js"></script>
+		<script src="js/scripts.js"></script>
+		<!--//scrolling js-->
+<script src="js/bootstrap.js"> </script>
+<!-- mother grid end here-->
+</body>
+</html>
+
+
+                      
+						
