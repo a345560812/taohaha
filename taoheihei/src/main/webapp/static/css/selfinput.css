@@ -1,0 +1,23 @@
+.file-preview{
+	width:300px;
+	height: 300px;
+}
+.file-preview-image{
+	height: auto;
+	width:100%;
+}
+.form-control:first-child{
+	width:300px;
+}
+.input-group-btn{
+	position: absolute;
+	margin-left: 300px;
+}
+.input-group-btn:last-child>.btn{
+	height: 34px;
+}
+i.glyphicon{
+	display:inline-block;
+}
+
+/*, .input-group-btn:last-child>.btn-group*/

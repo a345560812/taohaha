@@ -1,0 +1,14 @@
+.file-drop-zone{
+	width:300px!important;
+}
+
+.product-class1{
+	height:30px;
+	width:150px;
+	
+}
+
+.show-hover:hover{
+	background-color:yellow;
+	text-decoration:underline;
+}

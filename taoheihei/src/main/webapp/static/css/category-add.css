@@ -1,0 +1,23 @@
+.category-add-form{
+	height:40px;
+	width:300px;
+}
+input
+{	width:280px;
+	height:40px;
+	border-top-right-radius: 5px; 
+border-top-left-radius: 5px; 
+border-bottom-right-radius:5px;
+border-bottom-left-radius:5px; 
+}
+.btn-primary{
+	width:100px;
+	height:40px;
+}
+.text-danger{
+	height:50px;
+	width:400px;
+}
+.category-add-div{
+	
+}

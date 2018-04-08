@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Grids</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+
+
+<!-- Custom Theme files -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/fileinput.min.css" rel="stylesheet">
+<link href="css/product-add.css" rel="stylesheet">
+<link href="css/style3.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="css/selfinput.css" rel="stylesheet" type="text/css" media="all"/>
+
+<!--js-->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script charset="utf-8" src="js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script>
+
+var editor;
+KindEditor.ready(function(K) {
+    editor = K.create('textarea[name="content"]', {
+        allowFileManager : true
+    });
+    K('input[name=getHtml]').click(function(e) {
+        alert(editor.html());
+    });
+    K('input[name=isEmpty]').click(function(e) {
+        alert(editor.isEmpty());
+    });
+    K('input[name=getText]').click(function(e) {
+        alert(editor.text());
+    });
+    K('input[name=selectedHtml]').click(function(e) {
+        alert(editor.selectedHtml());
+    });
+    K('input[name=setHtml]').click(function(e) {
+        editor.html('<h3>Hello KindEditor</h3>');
+    });
+    K('input[name=setText]').click(function(e) {
+        editor.text('<h3>Hello KindEditor</h3>');
+    });
+    K('input[name=insertHtml]').click(function(e) {
+        editor.insertHtml('<strong>插入HTML</strong>');
+    });
+    K('input[name=appendHtml]').click(function(e) {
+        editor.appendHtml('<strong>添加HTML</strong>');
+    });
+    K('input[name=clear]').click(function(e) {
+        editor.html('');
+    });
+});
+function showName(typeId)
+{
+	$.ajax({
+        type: "POST",//请求方式
+        url: "/product/showCatName",//地址，就是json文件的请求路径
+        data:{
+        	
+        	typeId:typeId,
+        },
+        dataType: "json",
+        success:function(data){//返回的参数就是 action里面所有的有get和set方法的参数
+        	$(".showCat1").val(data.data.typeName);
+         	
+        	  
+        	 
+        
+        }
+    });
+	
+	}
+function editinfo2(){
+	var html="";
+	alert("sss")
+	$("#myModal1").modal("show");
+	alert("bbb")
+	$('#myModal1').on('shown.bs.modal', function () {
+		
+		$.ajax({
+			type:"POST",
+			url:"/product/class",
+			dataType:"json",
+			
+			success:function(data){
+				
+				
+				console.log(data.data);
+				for(var i=0;i<data.data.length;i++)
+				{	
+					if(i%10==0)
+						{
+							html+="<tr><td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='12%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+							
+						}
+					else if(i%10==9)
+						{
+							html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td></tr>";
+							
+						}
+					else {
+						html+="<td onclick='showName("+data.data[i].typeId+")' style='font-size:8px' width='10%' class='"+data.data[i].typeId+" show-hover'>"+data.data[i].typeName+"</td>";
+					}
+				}
+					alert(html);
+				$(".show-class1").append(html);
+				
+				
+				
+				
+				
+			}
+		});
+		});
+}
+function initFileInput(ctrlName, uploadUrl) {
+    var control = $('#' + ctrlName);
+    
+    control.fileinput({
+        language: 'zh', //设置语言
+        uploadUrl: uploadUrl, //上传的地址
+        allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
+        //uploadAsync: false, //插件支持同步和异步
+        //showUpload: false, //是否显示上传按钮
+    }).on("fileuploaded", function(event, data) {
+    	alert("上传成功")
+    	
+        //上传图片后的回调函数，可以在这做一些处理
+    });
+}
+function showCatFun(){
+	alert("确定");
+	$("#myModal1").modal('hide');
+	$("#myModal1").on('hidden.bs.modal',function(){  
+        alert("xiaoshi");  
+       	var html=$(".showCat1").val();
+       	alert(html);
+       	$(".showClass").html(html);
+    });
+}
+
+
+$(function(){
+//指定上传controller访问地址
+var path = 'http://localhost:8082/upload';
+//页面初始化加载initFileInput()方法传入ID名和上传地址
+initFileInput("itemImagers",path);
+});
+</script>
+</script>
+<!--icons-css-->
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<!--Google Fonts-->
+<link href='https://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>
+<!--//skycons-icons-->
+</head>
+<body>	
+<div class="page-container">	
+   <div class="left-content">
+	   <div class="mother-grid-inner">
+            <!--header start here-->
+				
+<!--heder end here-->
+<!-- script-for sticky-nav -->
+		
+		<!-- /script-for sticky-nav -->
+<!--inner block start here-->
+<div class="inner-block" >
+  	 <div class="form-grou">
+  	 	<form method="post"  class="form-horizontal1" role="form" id="myForm11" onsubmit="return ">
+        <div class="modal fade" id="myModal1"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+            <div class="modal-dialog">
+                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                    <div class="btn-info modal-header">
+                        <!--  模态框标题  -->
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!--  关闭按钮  -->
+                        <h4>商品类别展示！</h4>
+                        <!--  标题内容  -->
+                    </div>
+					<div class="show-class1">
+						
+					</div>
+                   	
+                        <!--  模态框内容，我在此处添加一个表单 -->
+                       	
+                           
+                       
+                  
+
+                    <div class="modal-footer">
+                    	<input type="text" class="showCat1" name="typeName">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="button" class="btn btn-info showCat2" onclick="showCatFun()">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
+  	 		<div><input id="itemImagers" name="itemImagers" type="file" multiple class="file"  data-min-file-count="1"></div>
+  	 		<br>
+ 			<div><button class="btn btn-info" onclick="editinfo2()" >选择商品分类</button><span class="showClass"></span></div>
+ 			<br>
+  			<div><input type="text" name="productName" placeholder="请输入商品名称"></div>
+  			<br>
+ 			<div><input type="text" name="productPrice" placeholder="请输入商品单价"/></div>
+ 			<br>
+ 			<div><input type="text" name="productPrice" placeholder="请输入商品库存数量"/></div>
+ 			<form style="margin: 0;">
+            <textarea name="content" style="width:800px;height:400px;visibility:hidden;display: block;">KindEditor</textarea>
+            <p>
+                <input type="button" name="getHtml" value="取得HTML" />
+                <input type="button" name="isEmpty" value="判断是否为空" />
+                <input type="button" name="getText" value="取得文本(包含img,embed)" />
+                <input type="button" name="selectedHtml" value="取得选中HTML" />
+                <br />
+                <br />
+                <input type="button" name="setHtml" value="设置HTML" />
+                <input type="button" name="setText" value="设置文本" />
+                <input type="button" name="insertHtml" value="插入HTML" />
+                <input type="button" name="appendHtml" value="添加HTML" />
+                <input type="button" name="clear" value="清空内容" />
+                <input type="reset" name="reset" value="Reset" />
+            </p>
+        </form>
+ 	
+ 	</div>
+</div>
+</div>
+</div>
+<!--inner block end here-->
+<!--copy rights start here-->
+<div class="copyrights">
+	 <p>Copyright &copy; 2016.Company name All rights <a href="http://www.cssmoban.com/" target="_blank" title="天喵商城">天喵商城</a> - Collect from <a href="http://www.cssmoban.com/" title="天喵商城" target="_blank">天喵商城</a></p>
+</div>	
+<!--COPY rights end here-->
+</div>
+<!--slider menu-->
+     <div class="sidebar-menu">
+		  	<div class="logo"> <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="#"> <span id="logo" ></span> 
+			      <!--<img id="logo" src="" alt="Logo"/>--> 
+			  </a> </div>		  
+		    <div class="menu">
+		      <ul id="menu" >
+		        <li id="menu-home" ><a href="index.html"><i class="fa fa-tachometer"></i><span>个人中心</span></a></li>
+		        <li><a href="#"><i class="fa fa-cogs"></i><span>商品管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul>
+		            <li><a href="product-add.html">新增商品</a></li>
+		            <li><a href="product-edit.html">编辑商品</a></li>
+		                    
+		          </ul>
+		        </li>
+		        <li id="menu-comunicacao" ><a href="#"><i class="fa fa-book nav_icon"></i><span>商品分类管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-comunicacao-sub" >
+		            <li id="menu-mensagens" style="width: 120px" ><a href="category-add.html">新增分类</a></li>
+		           	<li id="menu-mensagens" style="width: 120px" ><a href="category-edit.html">编辑分类</a></li>
+		          	
+		          </ul>
+		        </li>
+		        
+		        <li id="menu-academico" ><a href="#"><i class="fa fa-file-text"></i><span>订单管理</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		          <ul id="menu-academico-sub" >
+		          	 <li id="menu-academico-boletim" ><a href="login.html">Login</a></li>
+		            <li id="menu-academico-avaliacoes" ><a href="signup.html">Sign Up</a></li>		           
+		          </ul>
+		        </li>
+		        
+		        <li><a href="charts.html"><i class="fa fa-bar-chart"></i><span>Charts</span></a></li>
+		        <li><a href="#"><i class="fa fa-envelope"></i><span>Mailbox</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		        	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="inbox.html">Inbox</a></li>
+			            <li id="menu-academico-boletim" ><a href="inbox-details.html">Compose email</a></li>
+		             </ul>
+		        </li>
+		         <li><a href="#"><i class="fa fa-cog"></i><span>System</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	 <ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="404.html">404</a></li>
+			            <li id="menu-academico-boletim" ><a href="blank.html">Blank</a></li>
+		             </ul>
+		         </li>
+		         <li><a href="#"><i class="fa fa-shopping-cart"></i><span>E-Commerce</span><span class="fa fa-angle-right" style="float: right"></span></a>
+		         	<ul id="menu-academico-sub" >
+			            <li id="menu-academico-avaliacoes" ><a href="product.html">Product</a></li>
+			            <li id="menu-academico-boletim" ><a href="price.html">Price</a></li>
+		             </ul>
+		         </li>
+		      </ul>
+		    </div>
+	 </div>
+	
+</div>
+<!--slide bar menu end here-->
+<script>
+var toggle = true;
+            
+$(".sidebar-icon").click(function() {                
+  if (toggle)
+  {
+    $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+    $("#menu span").css({"position":"absolute"});
+  }
+  else
+  {
+    $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+    setTimeout(function() {
+      $("#menu span").css({"position":"relative"});
+    }, 400);
+  }               
+                toggle = !toggle;
+            });
+</script>
+<!--scrolling js-->
+		<script src="js/jquery.nicescroll.js"></script>
+		<script src="js/scripts.js"></script>
+		<!--//scrolling js-->
+<script src="js/bootstrap.js"> </script>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/fileinput.min.js"></script>
+<script src="js/fileinput_locale_zh.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- mother grid end here-->
+</body>
+</html>
+
+              
